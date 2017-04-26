@@ -44,6 +44,8 @@ concurrently.
 
 * **MUST** be capable of zoom on data function.
 
+* **MUST** have console ability (both tx and rx)
+
 -----
 
 * **SHOULD** be capable of generating up to eight (8) individual plots.
