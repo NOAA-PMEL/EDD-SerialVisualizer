@@ -41,6 +41,10 @@ class MainWindow(QtGui.QMainWindow):
         self.data_rate = []
         self.stream_mode = "Stats"
 
+        
+
+        pg.setConfigOption('background', 'k')
+        pg.setConfigOption('foreground', 'w')
 
        
         ## Create docks, place them into the window one at a time.
@@ -82,6 +86,11 @@ class MainWindow(QtGui.QMainWindow):
         self.w0.addWidget(label, row=0, col=0)
         self.d0.addWidget(self.w0)
         self.d0.hideTitleBar()
+
+        #self.w0.setConfigOption('background','w')
+        #self.w0.setConfigOption('foreground','k')
+
+
 
         ## SERIAL PORT Widget
         self.w1 = SerialWidget()
@@ -355,6 +364,11 @@ if __name__ == '__main__':
 
         app = QtGui.QApplication([])
         win = MainWindow()
+
+        p = win.palette()
+        #p.setColor(win.backgroundRole(),QtCore.Qt.darkGray)
+        #p.setColor(win.foregroundRole(),QtCore.Qt.blue)
+        win.setPalette(p)
         
         #win.setCentralWidget(area)
         win.resize(900,600)
