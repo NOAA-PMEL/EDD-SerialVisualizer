@@ -12,6 +12,7 @@ import pyqtgraph.console
 
 import numpy as np
 
+from serial_console_widget import SerialConsoleWidget
 from serial_widget import SerialWidget
 from clock_widget import DigitalClock
 from plot_raw import RawPlotWidget
@@ -30,10 +31,6 @@ class MainWindow(QtGui.QMainWindow):
         self.serialNumPMEL = []
         self.serialNumMan = []
         self.firmware = []
-        self.rtcoffset = []
-        self.thermopile_gain = []
-        self.thermopile_sensitivity = []
-        self.thermopile_kvalue = []
         self.dome_gain = []
         self.dome_refV = []
         self.dome_res = []
@@ -58,18 +55,17 @@ class MainWindow(QtGui.QMainWindow):
         self.d5 = Dock("Data Plot",size=(550,550))
         self.d5a = Dock("Data",size=(200,50))
         self.d6 = Dock("Serial Console",size=(200,300))
-        self.d7 = Dock("System Settings",size=(200,500))
-        self.d8 = Dock("Sensor Image",size=(200,300))
+        
 
         self.area.addDock(self.d0,'left')
         self.area.addDock(self.d1,'bottom',self.d0)
         self.area.addDock(self.d5,'right',self.d1)
-        self.area.addDock(self.d7,'right',self.d5)
+
         self.area.addDock(self.d5a,'bottom',self.d5)
         self.area.addDock(self.d6,'bottom',self.d5a)
         self.area.addDock(self.d3,'bottom',self.d1)
         self.area.addDock(self.d4,'bottom',self.d3)
-        self.area.addDock(self.d8,'bottom',self.d7)
+        
         
         ## Add widgets into each dock
         ## GUI Description 
@@ -98,7 +94,7 @@ class MainWindow(QtGui.QMainWindow):
         ## MEATBALL
         self.w4 = pg.LayoutWidget()
         pic = QtGui.QLabel()
-        pixmap = QtGui.QPixmap("/images/PMEL.png")
+        pixmap = QtGui.QPixmap("PMEL.png")
         pic.setPixmap(pixmap)
         pic.setScaledContents(True)
         pic.setMaximumSize(150,150)
@@ -107,29 +103,30 @@ class MainWindow(QtGui.QMainWindow):
         self.d4.hideTitleBar()
 
         ## DATA PLOT Widget
-        #self.w5 = RawPlotWidget()
-        self.w5 = StatsPlotWidget()
+        self.w5 = RawPlotWidget()
         self.d5.addWidget(self.w5)
 
         ## CURRENT Data Widget
-        self.w5a = CurrentDataWidget()
-        self.d5a.addWidget(self.w5a)
+        #self.w5a = CurrentDataWidget()
+        #self.d5a.addWidget(self.w5a)
 
         ## SERIAL CONSOLE Widget
-        self.w6 = pg.LayoutWidget()
-        self.label6 = QtGui.QLabel("""  SERIAL CONSOLE """)
-        self.label6.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
-        self.w6.addWidget(self.label6, row=0, col=0)
+        self.w6 = SerialConsoleWidget()
         self.d6.addWidget(self.w6)
-        self.d6.setMaximumHeight(250)
+##        self.w6 = pg.LayoutWidget()
+##        self.label6 = QtGui.QLabel("""  SERIAL CONSOLE """)
+##        self.label6.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignBottom)
+##        self.w6.addWidget(self.label6, row=0, col=0)
+##        self.d6.addWidget(self.w6)
+##        self.d6.setMaximumHeight(250)
 
         ## SYSTEM SETTING Parameters
-        self.w7 = SystemSettingWidget()
-        self.d7.addWidget(self.w7)
+        #self.w7 = SystemSettingWidget()
+        #self.d7.addWidget(self.w7)
 
         ## SENSOR TYPE Widget
-        self.w8 = ImageWidget()
-        self.d8.addWidget(self.w8)
+        #self.w8 = ImageWidget()
+        #self.d8.addWidget(self.w8)
 
 
         ## System Event Timer
@@ -360,8 +357,8 @@ if __name__ == '__main__':
         win = MainWindow()
         
         #win.setCentralWidget(area)
-        win.resize(1100,900)
-        win.setWindowTitle('Radiation Sensor Interface')
+        win.resize(900,600)
+        win.setWindowTitle('Serial Visualizer')
 
         win.show()
 
