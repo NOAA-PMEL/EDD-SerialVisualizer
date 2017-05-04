@@ -12,8 +12,8 @@ import pyqtgraph.console
 
 import numpy as np
 
-from serial_rxtx_widget2 import SerialRxTxWidget
-from serial_console_widget2 import SerialConsoleWidget
+from serial_rxtx_widget import SerialRxTxWidget
+from serial_console_widget import SerialConsoleWidget
 from serial_receive_widget import SerialReceiveParser
 from serial_widget import SerialWidget
 from clock_widget import DigitalClock
