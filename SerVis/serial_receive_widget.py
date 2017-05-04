@@ -10,8 +10,8 @@ class SerialReceiveParser(QWidget):
 
     def __init__(self,*args,**kwargs):
         super(SerialReceiveParser,self).__init__(*args,**kwargs)
-        
-        groupfont = QFont("Times", 12, QFont.Bold)
+        titlefont = QFont("Times", 12, QFont.Bold)
+        groupfont = QFont("Times", 10, QFont.Bold)
 
         
         layout = QVBoxLayout()
@@ -19,9 +19,15 @@ class SerialReceiveParser(QWidget):
         termLayout = QGridLayout()
         numberLayout = QGridLayout()
         
-
+        sizePolicy  = QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
 
         ## Deliminator Layouts
+        self.label = QLabel('Serial Receive')
+        self.label.setFont(titlefont)
+        self.label.setAlignment(Qt.AlignCenter | Qt.AlignTop)
+        self.label.setGeometry(0,0,20,20)
         self.delimLabel = QLabel('Delimiter')
         self.delimLabel.setFont(groupfont)
         self.delimLabel.setAlignment(Qt.AlignLeft)
@@ -37,28 +43,40 @@ class SerialReceiveParser(QWidget):
         self.delimOther.setAlignment(Qt.AlignLeft)
 
         self.delimCommaBox = QCheckBox()
+        self.delimCommaBox.setChecked(True)
+        self.delimCommaBox.clicked.connect(lambda:self.update_delim('Comma'))
         self.delimSpaceBox = QCheckBox()
+        self.delimSpaceBox.clicked.connect(lambda:self.update_delim('Space'))
         self.delimColonBox = QCheckBox()
+        self.delimColonBox.clicked.connect(lambda:self.update_delim('Colon'))
         self.delimSemiCBox = QCheckBox()
+        self.delimSemiCBox.clicked.connect(lambda:self.update_delim('SemiC'))
         self.delimOtherBox = QCheckBox()
+        self.delimOtherBox.clicked.connect(lambda:self.update_delim('Other'))
         self.delimOtherLine = QLineEdit()
 
         
         ## Terminator Layouts
         self.termLabel = QLabel('Line Termination')
         self.termLabel.setFont(groupfont)
-        self.termCr = QLabel('\\r')
-        self.termCrLf = QLabel('\\r\\n')
-        self.termLf = QLabel('\\n')
-        self.termEOT = QLabel('EOT (0x04)')
+        self.termCr = QLabel('<CR> (\\r)')
+        self.termCrLf = QLabel('<CR><LF> (\\r\\n)')
+        self.termLf = QLabel('<LF> (\\n)')
+        self.termEOT = QLabel('<EOT> (0x04)')
         self.termOther = QLabel('Other')
 
         self.termLabelBox = QCheckBox()
         self.termCrBox = QCheckBox()
+        self.termCrBox.clicked.connect(lambda:self.update_term('CR'))
         self.termCrLfBox = QCheckBox()
+        self.termCrLfBox.clicked.connect(lambda:self.update_term('CRLF'))
+        self.termCrLfBox.setChecked(True)
         self.termLfBox = QCheckBox()
+        self.termLfBox.clicked.connect(lambda:self.update_term('LF'))
         self.termEOTBox = QCheckBox()
+        self.termEOTBox.clicked.connect(lambda:self.update_term('EOT'))
         self.termOtherBox = QCheckBox()
+        self.termOtherBox.clicked.connect(lambda:self.update_term('Other'))
         self.termOtherLine = QLineEdit()
 
         ## Number Layout
@@ -69,7 +87,7 @@ class SerialReceiveParser(QWidget):
         self.numValuesBox = QSpinBox()
         self.numValuesBox.setMinimum(1)
         self.numValuesBox.setMaximum(8)
-        
+        self.numValuesBox.setValue(8)
 
         
         #delimLayout.addWidget(self.delimLabel,0,0,4,0)
@@ -103,6 +121,7 @@ class SerialReceiveParser(QWidget):
         numberLayout.addWidget(self.numValuesBox,0,1)
 
         #.setColumnMinimumWidth(0,5)
+        layout.addWidget(self.label)
         layout.addWidget(self.delimLabel)
         layout.addLayout(delimLayout)
         layout.addWidget(self.termLabel)
@@ -112,13 +131,15 @@ class SerialReceiveParser(QWidget):
         
         self.setLayout(layout)
         self.show()
-
+        #self.setMinimumWidth(300)
+        
     def delim_state_changed(self,int):
         pass
         
     def parse_string(self,string):
         term = []
         substring = []
+        #print(string)
         # Determin delimiter
         if(self.termCrBox.isChecked()==True):
             term = '\r'
@@ -133,6 +154,8 @@ class SerialReceiveParser(QWidget):
 
         # Determine the substring
         substring = string.split(term)
+        #print("Substring=")
+        #print(substring)
         data = []
 
         if(self.delimCommaBox.isChecked() == True):
@@ -145,7 +168,8 @@ class SerialReceiveParser(QWidget):
             delim = ';'
         elif(self.delimOtherBox.isChecked()==True):
             delim = self.delimOtherLine.text()
-            
+
+        #print(delim)
         ## Split the substring and create a multidimensional list of floats
         idx = 0
         for subs in substring:
@@ -156,7 +180,7 @@ class SerialReceiveParser(QWidget):
             temp = subs.split(delim)
             subdata = []
             #print(len(temp))
-            if(len(temp) == (self.numValuesBox.value()+1)):
+            if(len(temp) == (self.numValuesBox.value())):
                 for t in temp:
                     #print(t)
                     if(t == ''):
@@ -165,10 +189,69 @@ class SerialReceiveParser(QWidget):
                         subdata.append(float(t))
 
                 data.append(subdata)
-
+            #print(subdata)
         ## Return the data if valid
         return data
 
+
+    
+    def update_delim(self,value):
+        #print("Here Value = ")
+        #print(value)
+        if(value == 'Comma'):
+            self.delimSpaceBox.setCheckState(False)
+            self.delimColonBox.setCheckState(False)
+            self.delimSemiCBox.setCheckState(False)
+            self.delimOtherBox.setCheckState(False)
+        elif(value == 'Space'):
+            self.delimCommaBox.setCheckState(False)
+            self.delimColonBox.setCheckState(False)
+            self.delimSemiCBox.setCheckState(False)
+            self.delimOtherBox.setCheckState(False)
+        elif(value == 'Colon'):
+            self.delimSpaceBox.setCheckState(False)
+            self.delimCommaBox.setCheckState(False)
+            self.delimSemiCBox.setCheckState(False)
+            self.delimOtherBox.setCheckState(False)
+        elif(value == 'SemiC'):
+            self.delimSpaceBox.setCheckState(False)
+            self.delimColonBox.setCheckState(False)
+            self.delimCommaBox.setCheckState(False)
+            self.delimOtherBox.setCheckState(False)
+        elif(value == 'Other'):
+            self.delimSpaceBox.setCheckState(False)
+            self.delimColonBox.setCheckState(False)
+            self.delimSemiCBox.setCheckState(False)
+            self.delimCommaBox.setCheckState(False)
+            
+        return
+
+    def update_term(self,value):
+        if(value == 'CR'):
+            self.termCrLfBox.setCheckState(False)
+            self.termLfBox.setCheckState(False)
+            self.termEOTBox.setCheckState(False)
+            self.termOtherBox.setCheckState(False)
+        elif(value == 'LF'):
+            self.termCrBox.setCheckState(False)
+            self.termCrLfBox.setCheckState(False)
+            self.termEOTBox.setCheckState(False)
+            self.termOtherBox.setCheckState(False)
+        elif(value == 'CRLF'):
+            self.termCrBox.setCheckState(False)
+            self.termLfBox.setCheckState(False)
+            self.termEOTBox.setCheckState(False)
+            self.termOtherBox.setCheckState(False)
+        elif(value == 'EOT'):
+            self.termCrBox.setCheckState(False)
+            self.termCrLfBox.setCheckState(False)
+            self.termLfBox.setCheckState(False)
+            self.termOtherBox.setCheckState(False)
+        elif(value == 'Other'):
+            self.termCrBox.setCheckState(False)
+            self.termCrLfBox.setCheckState(False)
+            self.termLfBox.setCheckState(False)
+            self.termEOTBox.setCheckState(False)
 
 if __name__ == "__main__":            
     class MainWindow(QMainWindow):

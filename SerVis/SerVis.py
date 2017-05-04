@@ -12,7 +12,8 @@ import pyqtgraph.console
 
 import numpy as np
 
-from serial_console_widget import SerialConsoleWidget
+from serial_rxtx_widget2 import SerialRxTxWidget
+from serial_console_widget2 import SerialConsoleWidget
 from serial_receive_widget import SerialReceiveParser
 from serial_widget import SerialWidget
 from clock_widget import DigitalClock
@@ -60,9 +61,9 @@ class MainWindow(QtGui.QMainWindow):
         self.dock2 = Dock("Date/Time",size=(60,25))
         self.dock3 = Dock("PMEL Logo",size=(60,60))
         self.dock5 = Dock("Data Plot",size=(550,550))
-        self.dock6 = Dock("Data",size=(200,50))
+        #self.dock6 = Dock("Data",size=(200,50))
         self.dock7 = Dock("Serial Console",size=(200,300))
-        self.dock8 = Dock("Serial Receive",size=(200,300))
+        self.dock6 = Dock("Serial Rx/Tx Settings",size=(200,300))
         
 
         self.area.addDock(self.dock0,'left')
@@ -73,7 +74,8 @@ class MainWindow(QtGui.QMainWindow):
         self.area.addDock(self.dock7,'bottom',self.dock6)
         self.area.addDock(self.dock2,'bottom',self.dock1)
         self.area.addDock(self.dock3,'bottom',self.dock2)
-        self.area.addDock(self.dock8,'right',self.dock3)
+        self.area.moveDock(self.dock6,'above',self.dock7)
+        #self.area.addDock(self.dock8,'right',self.dock7)
         
         
         ## Add widgets into each dock
@@ -129,14 +131,17 @@ class MainWindow(QtGui.QMainWindow):
         self.dock7.addWidget(self.w_serial)
 
         ## SERIAL RECEIVE WIDGET
-        self.w_receive = SerialReceiveParser()
-        self.dock8.addWidget(self.w_receive)
+        self.w_rxtx = SerialRxTxWidget()
+        self.dock6.addWidget(self.w_rxtx)
 
 
         ## System Event Timer
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.update)
-        self.timer.start(100)   
+        self.timer.start(1000)
+
+
+        ## Add All Button Connects that aren't internal to 
 
         self.setCentralWidget(self.area)
 
@@ -156,19 +161,29 @@ class MainWindow(QtGui.QMainWindow):
 
         """
 
+        #self.timer.start(self.w_rxtx.tx.
+
     
         ## Update the Serial Buffer (read the port)
         self.w_port.update_serial_buffer()
-        
+        #print(self.w_port.data)
         ## If there is actually data, parse it and append it to the string buffer for the serial console
         if(len(self.w_port.data) > 0):
             try:
+                #print(self.w_port.data)
                 ## Parse the string
-                self.parse_serial_data(self.w_port.data)
+                #self.parse_serial_data(self.w_port.data)
+                data = self.w_rxtx.rx.parse_string(self.w_port.data)
+                #print(data[0])
 
                 ## Append the string to the running buffer
-                self.dataStr.append(self.w_port.data)  
+                #self.dataStr.append(self.w_port.data)
+
+                ## Add data to plot
+                #print("enter")
+                self.w_plot.addArray(data[0])
             except:
+                #print("failed")
                 pass
         try:
             ## Set the console 'label' to the 
