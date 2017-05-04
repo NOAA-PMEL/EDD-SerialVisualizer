@@ -48,9 +48,9 @@ class RawPlotWidget(QtGui.QWidget):
         self.curve2 = self.plt1.plot(pen=(0,0,255),name=('D2'))
         self.curve3 = self.plt1.plot(pen=(0,127,127),name=('D3'))
         self.curve4 = self.plt1.plot(pen=(127,127,0),name=('D4'))
-        self.curve5 = self.plt1.plot(pen=(0,63,63),name=('D5'))
-        self.curve6 = self.plt1.plot(pen=(63,63,0),name=('D6'))
-        self.curve7 = self.plt1.plot(pen=(63,63,63),name=('D7'))
+        self.curve5 = self.plt1.plot(pen=(127,0,127),name=('D5'))
+        self.curve6 = self.plt1.plot(pen=(200,100,0),name=('D6'))
+        self.curve7 = self.plt1.plot(pen=(0,200,100),name=('D7'))
         
         self.plt1.setLabel('left',"",units='Counts')
 
@@ -58,52 +58,77 @@ class RawPlotWidget(QtGui.QWidget):
         self.d0_en.setChecked(True)
         self.d0_en.clicked.connect(lambda:self.update_check('D0'))
         self.d0_lbl = QtGui.QLabel('D0')
+        self.d0_lbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.d0_val = QtGui.QLCDNumber()
+        self.d0_val.setSegmentStyle(QtGui.QLCDNumber.Flat)
         
         self.d1_en = QtGui.QCheckBox()
         self.d1_en.setChecked(True)
         self.d1_lbl = QtGui.QLabel('D1')
+        self.d1_lbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.d1_val = QtGui.QLCDNumber()
+        self.d1_val.setSegmentStyle(QtGui.QLCDNumber.Flat)
         
         self.d2_en = QtGui.QCheckBox()
         self.d2_en.setChecked(True)
         self.d2_lbl = QtGui.QLabel('D2')
+        self.d2_val = QtGui.QLCDNumber()
+        self.d2_val.setSegmentStyle(QtGui.QLCDNumber.Flat)
         
         self.d3_en = QtGui.QCheckBox()
         self.d3_en.setChecked(True)
         self.d3_lbl = QtGui.QLabel('D3')
+        self.d3_val = QtGui.QLCDNumber()
+        self.d3_val.setSegmentStyle(QtGui.QLCDNumber.Flat)
         
         self.d4_en = QtGui.QCheckBox()
         self.d4_en.setChecked(True)
         self.d4_lbl = QtGui.QLabel('D4')
+        self.d4_val = QtGui.QLCDNumber()
+        self.d4_val.setSegmentStyle(QtGui.QLCDNumber.Flat)
         
         self.d5_en = QtGui.QCheckBox()
         self.d5_en.setChecked(True)
         self.d5_lbl = QtGui.QLabel('D5')
+        self.d5_val = QtGui.QLCDNumber()
+        self.d5_val.setSegmentStyle(QtGui.QLCDNumber.Flat)
         
         self.d6_en = QtGui.QCheckBox()
         self.d6_en.setChecked(True)
         self.d6_lbl = QtGui.QLabel('D6')
+        self.d6_val = QtGui.QLCDNumber()
+        self.d6_val.setSegmentStyle(QtGui.QLCDNumber.Flat)
         
         self.d7_en = QtGui.QCheckBox()
         self.d7_en.setChecked(True)
         self.d7_lbl = QtGui.QLabel('D7')
+        self.d7_val = QtGui.QLCDNumber()
+        self.d7_val.setSegmentStyle(QtGui.QLCDNumber.Flat)
         
-        cbLayout.addWidget(self.d0_en,0,0)
-        cbLayout.addWidget(self.d1_en,0,1)
-        cbLayout.addWidget(self.d2_en,0,2)
-        cbLayout.addWidget(self.d3_en,0,3)
-        cbLayout.addWidget(self.d4_en,0,4)
-        cbLayout.addWidget(self.d5_en,0,5)
-        cbLayout.addWidget(self.d6_en,0,6)
-        cbLayout.addWidget(self.d7_en,0,7)
-        cbLayout.addWidget(self.d0_lbl,1,0)
-        cbLayout.addWidget(self.d1_lbl,1,1)
-        cbLayout.addWidget(self.d2_lbl,1,2)
-        cbLayout.addWidget(self.d3_lbl,1,3)
-        cbLayout.addWidget(self.d4_lbl,1,4)
-        cbLayout.addWidget(self.d5_lbl,1,5)
-        cbLayout.addWidget(self.d6_lbl,1,6)
-        cbLayout.addWidget(self.d7_lbl,1,7)
-        
+        cbLayout.addWidget(self.d0_en,0,0,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d1_en,0,1,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d2_en,0,2,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d3_en,0,3,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d4_en,0,4,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d5_en,0,5,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d6_en,0,6,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d7_en,0,7,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d0_lbl,1,0,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d1_lbl,1,1,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d2_lbl,1,2,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d3_lbl,1,3,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d4_lbl,1,4,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d5_lbl,1,5,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d6_lbl,1,6,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d7_lbl,1,7,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d0_val,2,0,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d1_val,2,1,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d2_val,2,2,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d3_val,2,3,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d4_val,2,4,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d5_val,2,5,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d6_val,2,6,QtCore.Qt.AlignCenter)
+        cbLayout.addWidget(self.d7_val,2,7,QtCore.Qt.AlignCenter)
         ## Set up the layout
         vbox.addWidget(self.win1)
 
@@ -166,100 +191,110 @@ class RawPlotWidget(QtGui.QWidget):
             self.d7.pop(0)
 
         self.count += 1
+        
+        ##Append the values to the respective arrays
         self.x.append(np.array([self.count]))
+        
+        
+        temp = np.array([])
+        for i in range(0,len(self.x)):
+            temp = np.append(temp,[np.nan])
 
-        #print("Count")
-        #print(self.count)
-
-        #print(d0)
-        #print("Selfx=" + str(self.x))
-        #vempty = self.x
-        #vempty = []
-        #for t in self.x:
-        #    t.fill(0)
-        #    vempty.append(np.copy(t))
-
-        #print(vempty)
-        #print(self.d0_en.isChecked())
+       
         try:
+            self.d0.append(np.array([d0[0]]))
+            num = u'%8.2f' % d0[0]
+            self.d0_val.display(d0[0])
             if(self.d0_en.isChecked()):
-                print("cHECKED")
-                self.d0.append(np.array([d0[0]]))
                 self.curve0.setData(np.hstack(self.x),np.hstack(self.d0))
             else:
-                print("Notchecked")
-                #del(self.d0)
-                #self.d0 = np.empty(self.x)
-                #self.curve0.setData(np.hstack(self.x),np.hstack(self.d0))
-                self.curve0.setData(np.hstack(self.x),np.hstack(vempty))
+                self.curve0.setData(np.hstack(self.x),temp)
                 
         except:
             print("Failed in false")
             pass
         
         try:
-            
+            self.d1.append(np.array([d0[1]]))
+            #num = u'%6.2f' % d0[1]
+            self.d1_val.display(d0[1])
             if self.d1_en.isChecked() == True:
-                self.d1.append(np.array([d0[1]]))
                 self.curve1.setData(np.hstack(self.x),np.hstack(self.d1))
             else:
-                #self.curve1.setData(np.hstack(self.x),np.hstack(self.d1))
-                pass
+                self.curve1.setData(np.hstack(self.x),temp)
 
         except:
             pass
 
         try:
+            self.d2.append(np.array([d0[2]]))
+            #num = u'%.2f' % d0[2]
+            self.d2_val.display(d0[2])
             if self.d2_en.isChecked() == True:
-                self.d2.append(np.array([d0[2]]))
+                
                 self.curve2.setData(np.hstack(self.x),np.hstack(self.d2))
             else:
-                self.curve2.setData(np.hstack(self.x),np.hstack(self.d2))
+                self.curve2.setData(np.hstack(self.x),temp)
         except:
             pass
 
         try:
+            self.d3.append(np.array([d0[3]]))
+            #num = u'%.2f' % d0[3]
+            self.d3_val.display(d0[3])
             if self.d3_en.isChecked() == True:
-                self.d3.append(np.array([d0[3]]))
+                
                 self.curve3.setData(np.hstack(self.x),np.hstack(self.d3))
             else:
-                self.curve3.setData(np.hstack(self.x),np.hstack(self.d3))
+                self.curve3.setData(np.hstack(self.x),temp)
         except:
             pass
 
         try:
+            self.d4.append(np.array([d0[4]]))
+            #num = u'%.2f' % d0[4]
+            self.d4_val.display(d0[4])
             if self.d4_en.isChecked() == True:
-                self.d4.append(np.array([d0[4]]))
+                
                 self.curve4.setData(np.hstack(self.x),np.hstack(self.d4))
             else:
-                self.curve4.setData(np.hstack(self.x),np.hstack(self.d4))
+                self.curve4.setData(np.hstack(self.x),temp)
         except:
             pass
 
         try:
+            self.d5.append(np.array([d0[5]]))
+            #num = u'%.2f' % d0[5]
+            self.d5_val.display(d0[5])
             if self.d5_en.isChecked() == True:
-                self.d5.append(np.array([d0[5]]))
+                
                 self.curve5.setData(np.hstack(self.x),np.hstack(self.d5))
             else:
-                self.curve5.setData(np.hstack(self.x),np.hstack(self.d5))
+                self.curve5.setData(np.hstack(self.x),temp)
         except:
             pass
 
         try:
+            self.d6.append(np.array([d0[6]]))
+            #num = u'%.2f' % d0[6]
+            self.d6_val.display(d0[6])
             if self.d6_en.isChecked() == True:
-                self.d6.append(np.array([d0[6]]))
+                
                 self.curve6.setData(np.hstack(self.x),np.hstack(self.d6))
             else:
-                self.curve6.setData(np.hstack(self.x),np.hstack(self.d6))
+                self.curve6.setData(np.hstack(self.x),temp)
         except:
             pass
 
         try:
+            self.d7.append(np.array([d0[7]]))
+            #num = u'%.2f' % d0[7]
+            self.d7_val.display(d0[7])
             if self.d7_en.isChecked() == True:
-                self.d7.append(np.array([d0[7]]))
+                
                 self.curve7.setData(np.hstack(self.x),np.hstack(self.d7))
             else:
-                self.curve7.setData(np.hstack(self.x),np.hstack(self.d7))
+                self.curve7.setData(np.hstack(self.x),temp)
         except:
             pass
         #print("append=")
@@ -313,8 +348,8 @@ class RawPlotWidget(QtGui.QWidget):
 
     def fake_data(self):
         val = float(np.random.normal(size=1))
-        self.addData(val,val+10,val+15,val+17.5,val+18.75, val+19.375,val+19.6875,val+19.84375)
-
+        #self.addData(val,val+10,val+15,val+17.5,val+18.75, val+19.375,val+19.6875,val+19.84375)
+        self.addArray([val,val+10,val+15,val+17.5,val+18.75, val+19.375,val+19.6875,val+19.84375])
 if __name__ == '__main__':
 
     import sys

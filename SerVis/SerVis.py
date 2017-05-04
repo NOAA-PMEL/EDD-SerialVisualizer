@@ -217,7 +217,7 @@ if __name__ == '__main__':
         win.setPalette(p)
         
         #win.setCentralWidget(area)
-        win.resize(900,600)
+        win.resize(1200,800)
         win.setWindowTitle('Serial Visualizer')
 
         win.show()

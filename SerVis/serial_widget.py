@@ -42,7 +42,7 @@ class SerialWidget(QWidget):
         self.bits = []
         self.port = []
         self.portnames = []
-        self.timeout = 0.1
+        self.timeout = 1
         
         #Setup the Port
         self.find_available_ports()
